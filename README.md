@@ -18,3 +18,5 @@ don't break the chain - commit to open source everyday
 - suggest projects to work on
 - recommend what to work on next based on favorites
 - merit badges
+- ask for help on your open source project
+
