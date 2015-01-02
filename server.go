@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	// classic provides Recovery, Logging, Static default middleware
 	n := negroni.Classic()
 
 	router := mux.NewRouter()
