@@ -17,7 +17,7 @@ Vagrant.configure('2') do |config|
     config.proxy.no_proxy = ENV['no_proxy'] if ENV['no_proxy']
   end
 
-  config.vm.define('filesync') do |app|
+  config.vm.define('streakers') do |app|
     app.vm.box = 'ubuntu/trusty64'
 
     app.vm.provider 'virtualbox' do |v|
