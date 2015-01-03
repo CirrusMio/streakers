@@ -42,6 +42,6 @@ then
 
 load up [localhost:3000](http://localhost:3000)
 
-If you've go your path setup right you can use one of these live reload packages:
+If you have your path setup right you can use one of these live reload packages:
 
 Use [Gin](https://github.com/codegangsta/gin) and [Fresh](https://github.com/pilu/fresh)
