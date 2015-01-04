@@ -8,6 +8,11 @@ import (
   "net/http"
 )
 
+type Hacker struct {
+  Name    string
+  Hobbies []string
+}
+
 func main() {
   // classic provides Recovery, Logging, Static default middleware
   n := negroni.Classic()
@@ -17,7 +22,7 @@ func main() {
     fmt.Fprintf(w, "Hello World!")
   })
 
-  router.HandleFunc("/json", foo)
+  router.HandleFunc("/json/{hacker}", hacker_handler)
 
   // router goes last
   n.UseHandler(router)
@@ -25,8 +30,10 @@ func main() {
 }
 
 // learned from: http://www.alexedwards.net/blog/golang-response-snippets#json
-func foo(w http.ResponseWriter, r *http.Request) {
-  my_little_json := []string{"music", "programming"}
+func hacker_handler(w http.ResponseWriter, r *http.Request) {
+  vars := mux.Vars(r) // from the request
+  hacker := vars["hacker"]
+  my_little_json := Hacker{hacker, []string{"music", "programming"}}
 
   js, err := json.Marshal(my_little_json)
   if err != nil {
