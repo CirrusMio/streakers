@@ -22,7 +22,8 @@ func main() {
     fmt.Fprintf(w, "Hello World!")
   })
 
-  router.HandleFunc("/json/{hacker}", hacker_handler)
+  // GET /hackers/chase
+  router.HandleFunc("/hackers/{hacker}", hacker_handler)
 
   // router goes last
   n.UseHandler(router)
