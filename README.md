@@ -26,19 +26,14 @@ don't break the chain - commit to open source everyday
 
 Make sure your `GOPATH` is set. Perhaps [just use one GOPATH](http://mwholt.blogspot.com/2014/02/why-i-use-just-one-gopath.html)
 
-Install depdencies:
+Install dependencies:
 
-Web middleware kinda like Martini, but more idomatic and less magical.
-
-`go get github.com/codegangsta/negroni`
-
-Router
-
-`go get github.com/gorilla/mux`
+`go get github.com/nitrous-io/goop`
+`goop install`
 
 then
 
-`go run server.go`
+`goop exec go run server.go`
 
 load up [localhost:3000](http://localhost:3000)
 
