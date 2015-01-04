@@ -5,7 +5,10 @@ import (
   "fmt"
   "github.com/codegangsta/negroni"
   "github.com/gorilla/mux"
+  "github.com/joho/godotenv"
+  "log"
   "net/http"
+  "os"
 )
 
 type Hacker struct {
@@ -14,6 +17,15 @@ type Hacker struct {
 }
 
 func main() {
+  env := godotenv.Load()
+  if env != nil {
+    log.Fatal("Error loading .env file")
+  }
+
+  db_user := os.Getenv("DATABASE_USER")
+  logger := log.New(os.Stdout, "", log.Ldate|log.Lmicroseconds|log.Lshortfile)
+  logger.Println("got db_user: ", db_user)
+
   // classic provides Recovery, Logging, Static default middleware
   n := negroni.Classic()
 
