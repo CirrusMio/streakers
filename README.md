@@ -22,6 +22,14 @@ don't break the chain - commit to open source everyday
 
 ## Development
 
+### With Vagrant
+
+`vagrant up`
+`vagrant ssh`
+
+`cd streakers`
+`goop exec go run server.go`
+
 ### Without Vagrant
 
 Make sure your `GOPATH` is set. Perhaps [just use one GOPATH](http://mwholt.blogspot.com/2014/02/why-i-use-just-one-gopath.html)
