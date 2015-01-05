@@ -3,15 +3,20 @@ package main
 import (
   "encoding/json"
   "fmt"
+  "net/http"
+  "log"
   "github.com/codegangsta/negroni"
   "github.com/gorilla/mux"
-  "net/http"
+  "github.com/PuerkitoBio/goquery"
 )
 
 type Hacker struct {
   Name    string
   Hobbies []string
+  Streak  int
+  Today   string
 }
+
 
 func main() {
   // classic provides Recovery, Logging, Static default middleware
@@ -34,7 +39,7 @@ func main() {
 func hacker_handler(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r) // from the request
   hacker := vars["hacker"]
-  my_little_json := Hacker{hacker, []string{"music", "programming"}}
+  my_little_json := Hacker{hacker, []string{"music", "programming"}, 1, contrib_calendar_scraper(hacker)}
 
   js, err := json.Marshal(my_little_json)
   if err != nil {
@@ -44,4 +49,12 @@ func hacker_handler(w http.ResponseWriter, r *http.Request) {
 
   w.Header().Set("Content-Type", "application/json")
   w.Write(js)
+}
+
+func contrib_calendar_scraper(hacker_name string) string {
+  url := "https://api.github.com/users/" + hacker_name + "/calendar"
+  doc, err := goquery.NewDocument(url)
+  if err != nil {
+    log.Fatal(err)
+  }
 }
