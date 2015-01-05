@@ -5,7 +5,10 @@ import (
   "fmt"
   "github.com/codegangsta/negroni"
   "github.com/gorilla/mux"
+  "github.com/joho/godotenv"
+  "log"
   "net/http"
+  "os"
 )
 
 type Hacker struct {
@@ -14,6 +17,15 @@ type Hacker struct {
 }
 
 func main() {
+  env := godotenv.Load()
+  if env != nil {
+    log.Fatal("Error loading .env file")
+  }
+
+  db_user := os.Getenv("DATABASE_USER")
+  logger := log.New(os.Stdout, "", log.Ldate|log.Lmicroseconds|log.Lshortfile)
+  logger.Println("got db_user: ", db_user)
+
   // classic provides Recovery, Logging, Static default middleware
   n := negroni.Classic()
 
@@ -32,9 +44,8 @@ func main() {
 
 // learned from: http://www.alexedwards.net/blog/golang-response-snippets#json
 func hacker_handler(w http.ResponseWriter, r *http.Request) {
-  vars := mux.Vars(r) // from the request
-  hacker := vars["hacker"]
-  my_little_json := Hacker{hacker, []string{"music", "programming"}}
+  params := mux.Vars(r) // from the request
+  my_little_json := Hacker{params["hacker"], []string{"music", "programming"}}
 
   js, err := json.Marshal(my_little_json)
   if err != nil {
