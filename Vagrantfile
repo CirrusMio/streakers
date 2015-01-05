@@ -34,7 +34,7 @@ Vagrant.configure('2') do |config|
 
     app.vm.provision :chef_solo do |chef|
       chef.log_level = :debug
-      chef.run_list = ['recipe[streakers::development]']
+      chef.run_list = ['recipe[streakers::default]']
     end
   end
 end
