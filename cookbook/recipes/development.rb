@@ -17,5 +17,14 @@ end
 
 include_recipe 'streakers::default'
 
-# TODO(chase): install goop: go get github.com/nitrous-io/goop
-# TODO(chase): run `goop install` in ~/streakers
+execute 'go get github.com/nitrous-io/goop' do
+  user 'vagrant'
+  environment 'HOME' => '/home/vagrant'
+  cwd '/home/vagrant/streakers'
+end
+
+execute 'goop install' do
+  user 'vagrant'
+  environment 'HOME' => '/home/vagrant'
+  cwd '/home/vagrant/streakers'
+end
