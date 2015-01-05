@@ -44,9 +44,8 @@ func main() {
 
 // learned from: http://www.alexedwards.net/blog/golang-response-snippets#json
 func hacker_handler(w http.ResponseWriter, r *http.Request) {
-  vars := mux.Vars(r) // from the request
-  hacker := vars["hacker"]
-  my_little_json := Hacker{hacker, []string{"music", "programming"}}
+  params := mux.Vars(r) // from the request
+  my_little_json := Hacker{params["hacker"], []string{"music", "programming"}}
 
   js, err := json.Marshal(my_little_json)
   if err != nil {
