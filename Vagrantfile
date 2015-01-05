@@ -33,7 +33,6 @@ Vagrant.configure('2') do |config|
     cache app, :chef, '/var/chef/cache'
 
     app.vm.provision :chef_solo do |chef|
-      chef.version = :latest
       chef.log_level = :debug
       chef.run_list = ['recipe[streakers::development]']
     end
