@@ -28,6 +28,9 @@ Make sure your `GOPATH` is set. Perhaps [just use one GOPATH](http://mwholt.blog
 
 Install dependencies:
 
+- Git, Mercurial
+- Install go dependencies:
+
 `go get github.com/nitrous-io/goop`
 `goop install`
 

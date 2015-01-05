@@ -3,7 +3,7 @@ FROM stackbrew/ubuntu:trusty
 MAINTAINER Nick Warner <nickwarner@gmail.com>
 
 RUN apt-get update
-RUN apt-get install -y golang git
+RUN apt-get install -y golang git mercurial
 
 ENV GOPATH /go
 ENV PATH $PATH:/usr/local/go/bin:$GOPATH/bin
