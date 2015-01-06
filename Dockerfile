@@ -8,10 +8,13 @@ RUN apt-get install -y golang git mercurial
 ENV GOPATH /go
 ENV PATH $PATH:/usr/local/go/bin:$GOPATH/bin
 
-RUN go get github.com/nitrous-io/goop
-RUN goop install
+RUN mkdir -p /var/www
+RUN chown -R www-data:www-data /var/www
+
+ADD * /var/www/
+RUN chmod +x /var/www/entrypoint.sh
+
+ENTRYPOINT /var/www/entrypoint.sh
+CMD []
 
 EXPOSE 3000
-
-ADD * /app/
-CMD ["goop exec", "go", "run", "/app/server.go"]
