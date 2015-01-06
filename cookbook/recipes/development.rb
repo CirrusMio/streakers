@@ -1,7 +1,9 @@
 # Cookbook Name:: streakers
 # Recipe:: development
 
+node.set['go']['version'] = '1.4'
 node.set['go']['owner'] = 'vagrant'
+node.set['go']['packages'] = ['github.com/nitrous-io/goop']
 
 magic_shell_environment 'GOROOT' do
   value '/usr/local/go'
@@ -17,14 +19,7 @@ end
 
 include_recipe 'streakers::default'
 
-execute 'go get github.com/nitrous-io/goop' do
-  user 'vagrant'
-  environment 'HOME' => '/home/vagrant'
-  cwd '/home/vagrant/streakers'
-end
-
-execute 'goop install' do
-  user 'vagrant'
-  environment 'HOME' => '/home/vagrant'
+execute 'install go packages' do
+  command 'goop install'
   cwd '/home/vagrant/streakers'
 end
