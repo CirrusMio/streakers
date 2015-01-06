@@ -20,6 +20,8 @@ end
 include_recipe 'streakers::default'
 
 execute 'install go packages' do
-  command 'goop install'
+  command '/opt/go/bin/goop install'
+  environment ({'HOME' => "/home/vagrant",
+                "PATH" => "/opt/go/bin:/usr/local/go/bin:#{ENV["PATH"]}"})
   cwd '/home/vagrant/streakers'
 end
