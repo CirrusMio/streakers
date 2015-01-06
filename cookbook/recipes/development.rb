@@ -27,6 +27,6 @@ execute 'install go packages' do
 end
 
 execute 'copy dotenv.sample to .env' do
-  command 'cp -n dotenv.sample .env'
+  command 'cp dotenv.sample .env'
   cwd '/home/vagrant/streakers'
 end
