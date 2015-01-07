@@ -25,3 +25,8 @@ execute 'install go packages' do
                 "PATH" => "/opt/go/bin:/usr/local/go/bin:#{ENV["PATH"]}"})
   cwd '/home/vagrant/streakers'
 end
+
+execute 'copy dotenv.sample to .env' do
+  command 'cp dotenv.sample .env'
+  cwd '/home/vagrant/streakers'
+end
