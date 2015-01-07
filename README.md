@@ -57,3 +57,5 @@ Use [Gin](https://github.com/codegangsta/gin) and [Fresh](https://github.com/pil
 [Go Bootcamp Book](http://www.golangbootcamp.com/book)
 
 [Programming in Go](http://www.golang-book.com/)
+
+[Resources for new Go programmers](http://dave.cheney.net/resources-for-new-go-programmers)
