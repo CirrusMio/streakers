@@ -59,3 +59,5 @@ Use [Gin](https://github.com/codegangsta/gin) and [Fresh](https://github.com/pil
 [Programming in Go](http://www.golang-book.com/)
 
 [Resources for new Go programmers](http://dave.cheney.net/resources-for-new-go-programmers)
+
+[Go Project Structure For Rubyists](http://gofullstack.com/articles/go-project-structure-for-rubyists.html)
