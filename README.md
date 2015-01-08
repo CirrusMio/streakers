@@ -51,3 +51,13 @@ load up [localhost:3000](http://localhost:3000)
 If you have your path setup right you can use one of these live reload packages:
 
 Use [Gin](https://github.com/codegangsta/gin) and [Fresh](https://github.com/pilu/fresh)
+
+## Resources
+
+[Go Bootcamp Book](http://www.golangbootcamp.com/book)
+
+[Programming in Go](http://www.golang-book.com/)
+
+[Resources for new Go programmers](http://dave.cheney.net/resources-for-new-go-programmers)
+
+[Go Project Structure For Rubyists](http://gofullstack.com/articles/go-project-structure-for-rubyists.html)
