@@ -13,6 +13,7 @@ import (
   "log"
   "net/http"
   "os"
+  "io/ioutil"
 )
 
 type Api struct {
@@ -108,8 +109,22 @@ func (api *Api) CreateHackerHandler(w http.ResponseWriter, r *http.Request) {
   w.Write(js)
 }
 
-func today(h string) bool {
-  return false
+func today(h string) bool{
+  url := fmt.Sprintf("https://api.github.com/users/%s/events", h)
+
+  response, err := http.Get(url)
+
+  if err != nil {
+    log.Fatal(err.Error())
+  }
+
+  body, err := ioutil.RealAll(res.Body)
+
+  if err != nil {
+    log.Fatal(err.Error())
+  }
+
+  // do something with the body
 }
 
 func InitEnv() {
