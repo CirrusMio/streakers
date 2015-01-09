@@ -109,22 +109,38 @@ func (api *Api) CreateHackerHandler(w http.ResponseWriter, r *http.Request) {
   w.Write(js)
 }
 
-func today(h string) bool{
-  url := fmt.Sprintf("https://api.github.com/users/%s/events", h)
+func today(h string) string {
 
+  var i *[]interface{}
+
+  personal_url := fmt.Sprintf("https://api.github.com/users/%s/events", h)
+
+  body := read_github_events(personal_url)
+
+  err := json.Unmarshal(body, &i)
+
+  if err != nil {
+    log.Fatal(err.Error())
+  }
+
+  return fmt.Sprintf("%v", i)
+}
+
+
+func read_github_events(url string) []byte {
   response, err := http.Get(url)
 
   if err != nil {
     log.Fatal(err.Error())
   }
 
-  body, err := ioutil.RealAll(res.Body)
+  body, err := ioutil.ReadAll(response.Body)
 
   if err != nil {
     log.Fatal(err.Error())
   }
 
-  // do something with the body
+  return body
 }
 
 func InitEnv() {
