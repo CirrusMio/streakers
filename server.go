@@ -111,7 +111,7 @@ func (api *Api) CreateHackerHandler(w http.ResponseWriter, r *http.Request) {
 
 func today(h string) string {
 
-  var i *[]interface{}
+  var i []map[string]interface{}
 
   personal_url := fmt.Sprintf("https://api.github.com/users/%s/events", h)
 
