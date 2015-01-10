@@ -34,7 +34,9 @@ func main() {
   logger.Println("got db_user: ", db_user)
 
   db, err := gorm.Open("postgres", fmt.Sprintf("user=%s dbname=%s password=%s host=%s sslmode=disable", db_user, db_name, db_pass, db_host))
-  logger.Println("db_err: ", err)
+  if err != nil {
+    log.Fatal("database connection error: ", err)
+  }
   db.DB()
   db.LogMode(true)
   db.AutoMigrate(Hacker{})
