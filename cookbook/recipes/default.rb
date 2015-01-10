@@ -8,6 +8,7 @@ include_recipe 'git'
 include_recipe 'golang'
 include_recipe 'golang::packages'
 
+package('ruby1.9.1-dev').run_action(:install)
 package('libcurl4-openssl-dev').run_action(:install)
 package('libxml2-dev').run_action(:install)
 package('libxslt1-dev').run_action(:install)
