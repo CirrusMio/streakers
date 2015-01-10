@@ -35,6 +35,12 @@ Vagrant.configure('2') do |config|
     app.vm.provision :chef_solo do |chef|
       chef.log_level = :debug
       chef.run_list = ['recipe[streakers::development]']
+      chef.json = {
+        postgresql: {
+          version: '9.3',
+          password: { postgres: 'password' },
+        }
+      }
     end
   end
 end
