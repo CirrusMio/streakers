@@ -14,6 +14,7 @@ import (
   "net/http"
   "os"
   "io/ioutil"
+  "time"
 )
 
 type Api struct {
@@ -24,6 +25,10 @@ type Hacker struct {
   Id    int64
   Name  string `sql:"not null;unique"`
   Today bool
+}
+
+type GitHubEvent struct {
+  Created_At string `json: "created_at"`
 }
 
 func main() {
@@ -109,21 +114,35 @@ func (api *Api) CreateHackerHandler(w http.ResponseWriter, r *http.Request) {
   w.Write(js)
 }
 
-func today(h string) string {
+func today(h string) bool {
 
-  var i []map[string]interface{}
+  var gh []GitHubEvent
+
+  answer := false
+
+  now_time := time.Now()
+
+  now_string := now_time.String()
+
+  today_string := now_string[0:10]
 
   personal_url := fmt.Sprintf("https://api.github.com/users/%s/events", h)
 
   body := read_github_events(personal_url)
 
-  err := json.Unmarshal(body, &i)
+  err := json.Unmarshal(body, &gh)
 
   if err != nil {
     log.Fatal(err.Error())
   }
 
-  return fmt.Sprintf("%v", i)
+  for _, item := range gh {
+    if item.Created_At[0:10] == today_string {
+      answer = true
+    }
+  }
+
+  return answer
 }
 
 
