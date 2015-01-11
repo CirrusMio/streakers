@@ -61,3 +61,11 @@ Use [Gin](https://github.com/codegangsta/gin) and [Fresh](https://github.com/pil
 [Resources for new Go programmers](http://dave.cheney.net/resources-for-new-go-programmers)
 
 [Go Project Structure For Rubyists](http://gofullstack.com/articles/go-project-structure-for-rubyists.html)
+
+[Effective Go](http://golang.org/doc/effective_go.html)
+
+[Learn X in Y minutes Where X=Go](http://learnxinyminutes.com/docs/go/)
+
+[Go by Example](https://gobyexample.com/)
+
+[Gophercasts](https://gophercasts.io)
