@@ -14,6 +14,10 @@ import (
   "os"
 )
 
+type Api struct {
+  DB gorm.DB
+}
+
 type Hacker struct {
   Id    int64
   Name  string
@@ -21,25 +25,11 @@ type Hacker struct {
 }
 
 func main() {
-  env := godotenv.Load()
-  if env != nil {
-    log.Fatal("Error loading .env file")
-  }
+  InitEnv()
 
-  db_user := os.Getenv("DATABASE_USER")
-  db_pass := os.Getenv("DATABASE_PASS")
-  db_host := os.Getenv("DATABASE_HOST")
-  db_name := os.Getenv("DATABASE_NAME")
-  logger := log.New(os.Stdout, "", log.Ldate|log.Lmicroseconds|log.Lshortfile)
-  logger.Println("got db_user: ", db_user)
-
-  db, err := gorm.Open("postgres", fmt.Sprintf("user=%s dbname=%s password=%s host=%s sslmode=disable", db_user, db_name, db_pass, db_host))
-  if err != nil {
-    log.Fatal("database connection error: ", err)
-  }
-  db.DB()
-  db.LogMode(true)
-  db.AutoMigrate(Hacker{})
+  api := Api{}
+  api.InitDB()
+  api.InitSchema()
 
   // classic provides Recovery, Logging, Static default middleware
   n := negroni.Classic()
@@ -50,7 +40,7 @@ func main() {
   })
 
   // GET /hackers/chase
-  router.HandleFunc("/hackers/{hacker}", hacker_handler)
+  router.HandleFunc("/hackers/{github_username}", hacker_handler)
 
   // router goes last
   n.UseHandler(router)
@@ -62,7 +52,7 @@ func hacker_handler(w http.ResponseWriter, r *http.Request) {
   params := mux.Vars(r) // from the request
   // need to figure out how to create record from params/Vars
   // return/display JSON dump of saved object
-  my_little_json := Hacker{1, params["hacker"], today("hacker")}
+  my_little_json := Hacker{1, params["github_username"], today("github_username")}
 
   js, err := json.Marshal(my_little_json)
   if err != nil {
@@ -76,4 +66,31 @@ func hacker_handler(w http.ResponseWriter, r *http.Request) {
 
 func today(h string) bool {
   return false
+}
+
+func InitEnv() {
+  env := godotenv.Load()
+  if env != nil {
+    log.Fatal("Error loading .env file")
+  }
+}
+
+func (api *Api) InitDB() {
+  var err error
+  db_user := os.Getenv("DATABASE_USER")
+  db_pass := os.Getenv("DATABASE_PASS")
+  db_host := os.Getenv("DATABASE_HOST")
+  db_name := os.Getenv("DATABASE_NAME")
+  logger := log.New(os.Stdout, "", log.Ldate|log.Lmicroseconds|log.Lshortfile)
+  logger.Println("got db_user: ", db_user)
+
+  api.DB, err = gorm.Open("postgres", fmt.Sprintf("user=%s dbname=%s password=%s host=%s sslmode=disable", db_user, db_name, db_pass, db_host))
+  if err != nil {
+    log.Fatal("database connection error: ", err)
+  }
+  api.DB.LogMode(true)
+}
+
+func (api *Api) InitSchema() {
+  api.DB.AutoMigrate(&Hacker{})
 }
