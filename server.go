@@ -114,18 +114,25 @@ func (api *Api) CreateHackerHandler(w http.ResponseWriter, r *http.Request) {
   w.Write(js)
 }
 
-func today(h string) bool {
-
-  var gh []GitHubEvent
-  personal_url := fmt.Sprintf("https://api.github.com/users/%s/events", h)
+func get_github_events(name string) []GitHubEvent {
+  var gh_events []GitHubEvent
+  personal_url := fmt.Sprintf("https://api.github.com/users/%s/events", name)
   body := read_github_events(personal_url)
-  err := json.Unmarshal(body, &gh)
+  err := json.Unmarshal(body, &gh_events)
+
   if err != nil {
     log.Fatal(err.Error())
   }
 
-  today_string := time.Now().String()[0:10]
-  for _, item := range gh {
+  return gh_events
+}
+
+func today(name string) bool {
+
+  gh_events := get_github_events(name)
+
+  today_string := time.Now().Local().String()[0:10]
+  for _, item := range gh_events {
     answer, err := regexp.MatchString(today_string, item.Created_At)
 
     if err != nil {
