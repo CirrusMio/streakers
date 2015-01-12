@@ -40,7 +40,10 @@ func main() {
   })
 
   // GET /hackers/chase
-  router.HandleFunc("/hackers/{github_username}", hacker_handler)
+  router.HandleFunc("/hackers/{github_username}", api.HackerHandler).Methods("GET")
+
+  // POST /hackers
+  router.HandleFunc("/hackers", api.CreateHackerHandler).Methods("POST")
 
   // router goes last
   n.UseHandler(router)
@@ -48,9 +51,9 @@ func main() {
 }
 
 // learned from: http://www.alexedwards.net/blog/golang-response-snippets#json
-func hacker_handler(w http.ResponseWriter, r *http.Request) {
+func (api *Api) HackerHandler(w http.ResponseWriter, r *http.Request) {
   params := mux.Vars(r) // from the request
-  // need to figure out how to create record from params/Vars
+  // need to figure out how to recall a db record from params/Vars
   // return/display JSON dump of saved object
   my_little_json := Hacker{1, params["github_username"], today("github_username")}
 
@@ -60,6 +63,33 @@ func hacker_handler(w http.ResponseWriter, r *http.Request) {
     return
   }
 
+  w.Header().Set("Content-Type", "application/json")
+  w.Write(js)
+}
+
+func (api *Api) CreateHackerHandler(w http.ResponseWriter, r *http.Request) {
+  err := r.ParseForm()
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  hacker := Hacker{Name: r.Form.Get("name")}
+
+  // save data
+  if err := api.DB.Save(&hacker).Error; err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  // make JSON
+  js, err := json.Marshal(&hacker)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  // return JSON
   w.Header().Set("Content-Type", "application/json")
   w.Write(js)
 }
