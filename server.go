@@ -20,7 +20,7 @@ type Api struct {
 
 type Hacker struct {
   Id    int64
-  Name  string
+  Name  string `sql:"not null;unique"`
   Today bool
 }
 
@@ -55,9 +55,15 @@ func (api *Api) HackerHandler(w http.ResponseWriter, r *http.Request) {
   params := mux.Vars(r) // from the request
   // need to figure out how to recall a db record from params/Vars
   // return/display JSON dump of saved object
-  my_little_json := Hacker{1, params["github_username"], today("github_username")}
+  // my_little_json := Hacker{1, params["github_username"], today("github_username")}
+  hacker := Hacker{}
+  if err := api.DB.Where("name = ?", params["github_username"]).First(&hacker).Error; err != nil {
+    // This really should redirect to a Not Found route. Or return a not found JSON
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
 
-  js, err := json.Marshal(my_little_json)
+  js, err := json.Marshal(&hacker)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
@@ -77,7 +83,7 @@ func (api *Api) CreateHackerHandler(w http.ResponseWriter, r *http.Request) {
   hacker := Hacker{Name: r.Form.Get("name")}
 
   // save data
-  if err := api.DB.Save(&hacker).Error; err != nil {
+  if err := api.DB.Where(Hacker{Name: r.Form.Get("name")}).FirstOrCreate(&hacker).Error; err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   }
