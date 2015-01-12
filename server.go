@@ -80,9 +80,8 @@ func (api *Api) CreateHackerHandler(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  hacker := Hacker{Name: r.Form.Get("name")}
-
   // save data
+  hacker := Hacker{Name: r.Form.Get("name")}
   if err := api.DB.Where(Hacker{Name: r.Form.Get("name")}).FirstOrCreate(&hacker).Error; err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
