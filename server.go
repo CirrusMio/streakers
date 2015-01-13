@@ -132,15 +132,9 @@ func today(name string) bool {
   gh_events := get_github_events(name)
 
   // get zulu time with go time library
-  today_string := time.Now().Local().String()[0:10]
   for _, item := range gh_events {
-    answer, err := regexp.MatchString(today_string, item.Created_At)
-
-    if err != nil {
-      log.Fatal(err.Error())
-    }
-
-    if answer {
+    item_time := time.Parse(RFC3339, item.Created_At)
+    if time.Now().Equal(item_time) {
       return true
     }
   }
