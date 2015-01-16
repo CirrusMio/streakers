@@ -30,6 +30,10 @@ don't break the chain - commit to open source everyday
 `cd streakers`
 `goop exec go run server.go`
 
+#### Connecting to local postgres db
+
+`psql -U streaker -h 127.0.0.1 -d streaker_development`
+
 ### Without Vagrant
 
 Make sure your `GOPATH` is set. Perhaps [just use one GOPATH](http://mwholt.blogspot.com/2014/02/why-i-use-just-one-gopath.html)
