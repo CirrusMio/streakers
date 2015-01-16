@@ -133,7 +133,7 @@ func today(name string) bool {
 
   // get zulu time with go time library
   for _, item := range gh_events {
-    item_time := time.Parse(RFC3339, item.Created_At)
+    item_time, _ := time.Parse(time.RFC3339, item.Created_At)
     if time.Now().Equal(item_time) {
       return true
     }
