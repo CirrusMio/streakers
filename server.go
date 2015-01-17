@@ -24,6 +24,10 @@ type Api struct {
 type Hacker struct {
   Id    int64
   Name  string `sql:"not null;unique"`
+  // Today may not be something that we should save in the database.
+  // This is probably something that we want to be able to display though
+  // the api, but not necessarily save it since it will change frequently.
+  // It will be calculated upon the request.
   Today bool
 }
 
