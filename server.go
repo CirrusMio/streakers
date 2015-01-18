@@ -9,6 +9,7 @@ import (
   "github.com/jinzhu/gorm"
   "github.com/joho/godotenv"
   _ "github.com/lib/pq"
+  "github.com/unrolled/render"
   "log"
   "net/http"
   "os"
@@ -33,10 +34,18 @@ func main() {
 
   // classic provides Recovery, Logging, Static default middleware
   n := negroni.Classic()
+  // for easy template rendering
+  r := render.New(render.Options{
+    Directory:  "app/templates",
+    Layout:     "layout",
+    Extensions: []string{".tmpl", ".html"},
+  })
 
   router := mux.NewRouter()
+
   router.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-    fmt.Fprintf(w, "Hello World!")
+    // Assumes you have a template in ./app/templates called "index.html"
+    r.HTML(w, http.StatusOK, "index", nil)
   })
 
   // GET /hackers/chase
