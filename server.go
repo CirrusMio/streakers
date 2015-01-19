@@ -133,9 +133,9 @@ func today(name string) bool {
 
   gh_events := get_github_events(name)
 
-  for _, item := range gh_events {
-    item_time, _ := time.Parse(time.RFC3339, item.Created_At)
-    if time.Now().YearDay() == item_time.YearDay() {
+  for _, event := range gh_events {
+    event_time, _ := time.Parse(time.RFC3339, event.Created_At)
+    if time.Now().YearDay() == event_time.YearDay() {
       return true
     }
   }
