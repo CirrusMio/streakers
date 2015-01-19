@@ -24,10 +24,6 @@ type Api struct {
 type Hacker struct {
   Id    int64
   Name  string `sql:"not null;unique"`
-  // Today may not be something that we should save in the database.
-  // This is probably something that we want to be able to display though
-  // the api, but not necessarily save it since it will change frequently.
-  // It will be calculated upon the request.
   Today bool
 }
 
@@ -82,6 +78,8 @@ func (api *Api) HackerHandler(w http.ResponseWriter, r *http.Request) {
     return
   }
 
+  hacker.Today = today(hacker.Name)
+
   js, err := json.Marshal(&hacker)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -135,10 +133,9 @@ func today(name string) bool {
 
   gh_events := get_github_events(name)
 
-  // get zulu time with go time library
   for _, item := range gh_events {
     item_time, _ := time.Parse(time.RFC3339, item.Created_At)
-    if time.Now().Equal(item_time) {
+    if time.Now().YearDay() == item_time.YearDay() {
       return true
     }
   }
