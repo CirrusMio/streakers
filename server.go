@@ -24,7 +24,7 @@ type Api struct {
 type Hacker struct {
   Id    int64
   Name  string `sql:"not null;unique"`
-  Today bool
+  TodayUTC bool
 }
 
 type GitHubEvent struct {
@@ -78,7 +78,7 @@ func (api *Api) HackerHandler(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  hacker.Today = today(hacker.Name)
+  hacker.TodayUTC = today(hacker.Name)
 
   js, err := json.Marshal(&hacker)
   if err != nil {
@@ -132,6 +132,8 @@ func get_github_events(name string) []GitHubEvent {
 func today(name string) bool {
 
   gh_events := get_github_events(name)
+
+  log.Println(time.Now().Local().Zone())
 
   for _, event := range gh_events {
     event_time, _ := time.Parse(time.RFC3339, event.Created_At)
