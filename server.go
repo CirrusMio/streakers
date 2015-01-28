@@ -13,6 +13,8 @@ import (
   "log"
   "net/http"
   "os"
+  "io/ioutil"
+  "time"
 )
 
 type Api struct {
@@ -22,7 +24,11 @@ type Api struct {
 type Hacker struct {
   Id    int64
   Name  string `sql:"not null;unique"`
-  Today bool
+  TodayUTC bool
+}
+
+type GitHubEvent struct {
+  Created_At string `json: "created_at"`
 }
 
 func main() {
@@ -72,6 +78,8 @@ func (api *Api) HackerHandler(w http.ResponseWriter, r *http.Request) {
     return
   }
 
+  hacker.TodayUTC = today(hacker.Name)
+
   js, err := json.Marshal(&hacker)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -108,8 +116,50 @@ func (api *Api) CreateHackerHandler(w http.ResponseWriter, r *http.Request) {
   w.Write(js)
 }
 
-func today(h string) bool {
+func get_github_events(name string) []GitHubEvent {
+  var gh_events []GitHubEvent
+  personal_url := fmt.Sprintf("https://api.github.com/users/%s/events", name)
+  body := read_github_events(personal_url)
+  err := json.Unmarshal(body, &gh_events)
+
+  if err != nil {
+    log.Fatal(err.Error())
+  }
+
+  return gh_events
+}
+
+func today(name string) bool {
+
+  gh_events := get_github_events(name)
+
+  log.Println(time.Now().Local().Zone())
+
+  for _, event := range gh_events {
+    event_time, _ := time.Parse(time.RFC3339, event.Created_At)
+    if time.Now().YearDay() == event_time.YearDay() {
+      return true
+    }
+  }
+
   return false
+}
+
+
+func read_github_events(url string) []byte {
+  response, err := http.Get(url)
+
+  if err != nil {
+    log.Fatal(err.Error())
+  }
+
+  body, err := ioutil.ReadAll(response.Body)
+
+  if err != nil {
+    log.Fatal(err.Error())
+  }
+
+  return body
 }
 
 func InitEnv() {
