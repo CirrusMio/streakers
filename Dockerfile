@@ -9,12 +9,13 @@ ENV GOPATH /go
 ENV PATH $PATH:/usr/local/go/bin:$GOPATH/bin
 
 RUN mkdir -p /var/www
-RUN chown -R www-data:www-data /var/www
+WORKDIR /var/www
+RUN chown -R www-data:www-data .
 
-ADD * /var/www/
-RUN chmod +x /var/www/entrypoint.sh
+ADD * .
+RUN chmod +x entrypoint.sh
 
-ENTRYPOINT /var/www/entrypoint.sh
+ENTRYPOINT entrypoint.sh
 CMD []
 
 EXPOSE 3000
