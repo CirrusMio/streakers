@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/CirrusMio/streakers"
+	"github.com/CirrusMio/streakers/streakers"
 	"github.com/boltdb/bolt"
 )
 
