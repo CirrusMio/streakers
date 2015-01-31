@@ -1,4 +1,0 @@
-DATABASE_USER=streaker
-DATABASE_PASS=streaker
-DATABASE_HOST=127.0.0.1
-DATABASE_NAME=streaker_development

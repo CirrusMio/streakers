@@ -1,6 +1,0 @@
-github.com/codegangsta/negroni
-github.com/gorilla/mux
-github.com/joho/godotenv
-github.com/jinzhu/gorm
-github.com/lib/pq
-github.com/unrolled/render
