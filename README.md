@@ -22,39 +22,31 @@ don't break the chain - commit to open source everyday
 
 ## Development
 
-### With Vagrant
+### Developing With Docker
 
-`vagrant up`
-`vagrant ssh`
+Install and setup Docker on your preferred platform.
 
-`cd streakers`
-`goop exec go run server.go`
+If you're on Mac OS X be aware that you need to use the IP address given to you by boot2docker (`echo $DOCKER_HOST`) rather than `localhost` or `127.0.0.1`.
 
-#### Connecting to local postgres db
+```sh
+docker build . -t CirrusMio/streakers
 
-`psql -U streaker -h 127.0.0.1 -d streaker_development`
+docker run -it --rm -p 8080:8080 --name streakers CirrusMio/streakers
+```
 
-### Without Vagrant
+### Local Development
 
-Make sure your `GOPATH` is set. Perhaps [just use one GOPATH](http://mwholt.blogspot.com/2014/02/why-i-use-just-one-gopath.html)
+Make sure you have Go installed and your `GOPATH` is set.
+Read [Getting Started](http://golang.org/doc/install) and [How to Write Go Code](http://golang.org/doc/code.html) to get started.
 
-Install dependencies:
+```sh
+cd $GOPATH/src/github.com/CirrusMio/streakers
 
-- Git, Mercurial
-- Install go dependencies:
+go get github.com/CirrusMio/streakers
+go install github.com/CirrusMio/streakers
 
-`go get github.com/nitrous-io/goop`
-`goop install`
-
-then
-
-`goop exec go run server.go`
-
-load up [localhost:3000](http://localhost:3000)
-
-If you have your path setup right you can use one of these live reload packages:
-
-Use [Gin](https://github.com/codegangsta/gin) and [Fresh](https://github.com/pilu/fresh)
+$GOPATH/bin/streakers
+```
 
 ## Resources
 
@@ -73,3 +65,7 @@ Use [Gin](https://github.com/codegangsta/gin) and [Fresh](https://github.com/pil
 [Go by Example](https://gobyexample.com/)
 
 [Gophercasts](https://gophercasts.io)
+
+[Go Programming Language Specification](http://golang.org/ref/spec)
+
+[Go Memory Model](http://golang.org/ref/mem)
