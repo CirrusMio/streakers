@@ -12,9 +12,11 @@ import (
 )
 
 var (
-	dbPath     = flag.String("db", "streakers.db", "path to DB file")
-	staticPath = flag.String("static", "static", "path to static files")
-	addr       = flag.String("addr", ":8080", "host:port to run on")
+	dbPath       = flag.String("db", "streakers.db", "path to DB file")
+	staticPath   = flag.String("static", "static", "path to static files")
+	addr         = flag.String("addr", ":8080", "host:port to run on")
+	clientID     = flag.String("id", "", "Github client ID")
+	clientSecret = flag.String("secret", "", "Github client secret")
 )
 
 func main() {
@@ -35,6 +37,8 @@ func main() {
 
 	api := streakers.NewAPI(db)
 	defer api.Close()
+
+	api.SetCredentials(*clientID, *clientSecret)
 
 	http.Handle("/hackers", api)
 	http.Handle("/", http.FileServer(http.Dir(*staticPath)))

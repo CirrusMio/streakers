@@ -24,7 +24,7 @@ var (
 )
 
 // eventsURL is the URL to pull updates for the user from.
-const eventsURL = "https://api.github.com/users/%s/events"
+const eventsURL = "https://api.github.com/users/%s/events?client_id=%s&client_secret=%s"
 
 // Hacker is a person who writes the open source code.
 type Hacker struct {
@@ -35,8 +35,10 @@ type Hacker struct {
 // API provides an http.Handlers for creating and retrieving information
 // about hackers.
 type API struct {
-	db          *bolt.DB
-	rateLimited int64
+	db           *bolt.DB
+	rateLimited  int64
+	clientID     string
+	clientSecret string
 
 	names  chan string
 	ticker *time.Ticker
@@ -63,6 +65,12 @@ func NewAPI(db *bolt.DB) *API {
 	}
 
 	return api
+}
+
+// SetCredentials sets the client ID and client secret for Github.
+func (api *API) SetCredentials(id, secret string) {
+	api.clientID = id
+	api.clientSecret = secret
 }
 
 // ServeHTTP handles the /hackers API endpoint.
@@ -190,7 +198,7 @@ func (api *API) poll() {
 }
 
 func (api *API) updatedHacker(name string) (*Hacker, error) {
-	url := fmt.Sprintf(eventsURL, name)
+	url := fmt.Sprintf(eventsURL, name, api.clientID, api.clientSecret)
 
 	log.Printf("making request to %s\n", url)
 
@@ -202,18 +210,20 @@ func (api *API) updatedHacker(name string) (*Hacker, error) {
 
 	switch res.StatusCode {
 	case 200:
-		if res.Header.Get("X-RateLimit-Remaining") == "0" {
-			ts, err := strconv.ParseInt(res.Header.Get("X-RateLimit-Reset"), 10, 64)
-			if err != nil {
-				return nil, err
-			}
-
-			atomic.StoreInt64(&api.rateLimited, ts)
+		if res.Header.Get("X-RateLimit-Remaining") != "0" {
+			break
 		}
+
+		ts, err := strconv.ParseInt(res.Header.Get("X-RateLimit-Reset"), 10, 64)
+		if err != nil {
+			return nil, err
+		}
+
+		atomic.StoreInt64(&api.rateLimited, ts)
 	case 403:
 		return nil, fmt.Errorf("exceeded rate limit; dropping update for %s\n", name)
 	default:
-		return nil, fmt.Errorf("received status code %d", res.StatusCode)
+		return nil, fmt.Errorf("received status code %d\n", res.StatusCode)
 	}
 
 	var events []event
