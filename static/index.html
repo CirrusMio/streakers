@@ -4,9 +4,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/app.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/app.css">
     <title>Streakers</title>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -38,13 +38,41 @@
         </div>
     </section>
 
-    {{yield}}
+    <section id="home" name="home"></section>
+      <div id="w">
+          <div class="container">
+          <div class="row centered">
+            <h4>Don't break the chain - commit to open source everyday</h4>
+            <h1>STREAKERS</h1>
+            <hr class="aligncenter">
+          </div><!--/row -->
+          </div><!-- /.container -->
+      </div><!--/W Header -->
+
+      <section id="contact" name="contact">
+      <!-- FOOTER -->
+      <div id="f">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 col-lg-offset-3">
+              <form role="form" action="/hackers" method="post" enctype="plain">
+                  <input type="github_username" name="name" class="subscribe-input" placeholder="Enter your GitHub username..." required>
+                <button class='btn btn-lg btn-gold subscribe-submit' type="submit">go streaking</button>
+              </form>
+            </div>
+          </div><!--/row -->
+          <div class="row mt">
+            <h4 class="centered">&hearts;<br>CirrusMio</h4>
+          </div><!--/row -->
+        </div><!--/container -->
+      </div><!--/ F -->
+    </section>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>

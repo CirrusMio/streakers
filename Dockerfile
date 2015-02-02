@@ -1,21 +1,21 @@
-FROM stackbrew/ubuntu:trusty
+FROM golang
 
 MAINTAINER Nick Warner <nickwarner@gmail.com>
 
-RUN apt-get update
-RUN apt-get install -y golang git mercurial
+# Copy the local package files to the container's workspace.
+ADD . /go/src/github.com/CirrusMio/streakers
 
-ENV GOPATH /go
-ENV PATH $PATH:/usr/local/go/bin:$GOPATH/bin
+# Change directory so static assets will be in the correct location.
+WORKDIR /go/src/github.com/CirrusMio/streakers
 
-RUN mkdir -p /var/www
-WORKDIR /var/www
-RUN chown -R www-data:www-data .
+# Set up the dependencies for streakers.
+RUN go get github.com/CirrusMio/streakers
 
-ADD * .
-RUN chmod +x entrypoint.sh
+# Build streakers.
+RUN go install github.com/CirrusMio/streakers
 
-ENTRYPOINT entrypoint.sh
-CMD []
+# Run streakers.
+ENTRYPOINT ["/go/bin/streakers"]
 
-EXPOSE 3000
+# Expose streakers on 8080.
+EXPOSE 8080
